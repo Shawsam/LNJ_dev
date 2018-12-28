@@ -120,3 +120,15 @@ page{ height:100%; font:26rpx/40rpx "微软雅黑"; }
 .wx-switch-input{width:45px!important;height:24px !important;}
 .wx-switch-input::before{width:45px !important; height:24px !important;}
 .wx-switch-input::after{width:22px !important; height:22px !important;}
+
+.discount{ line-height:70rpx; padding:20rpx 40rpx!important; }
+.discount .title .tip{ background:#FB840F; color:#fff; margin-left:10rpx; padding:0 4rpx; border-radius:4rpx; font-size:22rpx;}
+.discount .item .pullRight{ float:right; margin-left:10rpx; color:#999;}
+.discount .item .icon{ height:40rpx; width:40rpx; display:inline-block;  margin-left:15rpx; vertical-align:middle; }
+.discount .item .tag{ color:#FB840F; font-size:0; border-radius:4rpx; margin-left:10rpx; }
+.discount .item.choosed .tag{  font-size:22rpx;  border:1px solid #FB840F; padding:0 4rpx; }
+.discount .item .ichoosed{ display:none; }
+.discount .item.choosed .ichoosed{ display:inline-block; }
+.discount .item.choosed .ichoose{ display:none; }
+
+

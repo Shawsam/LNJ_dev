@@ -44,8 +44,12 @@ Page({
       currentTime:'',
       startTime:'6:30',
       endTime:'20:00',
-      isCard:1
-
+      isCard:1,
+      type:1,
+      useSenior:1,
+      isSenior:1,
+      seniorName:'超级特权卡',
+      seniorCode:''
   },
   switchChange:function(e){
       var state = e.detail.value
@@ -70,7 +74,8 @@ Page({
           subscribe:this.data.subscribe,
           dwCoupons:this.data.dwCoupons,
           type:this.data.type,
-          isCard:this.data.isCard
+          isCard:this.data.isCard,
+          useSenior:this.data.useSenior
       }
       if(this.data.subscribe==0){
          delete param.subscribe
@@ -137,7 +142,9 @@ Page({
                         //coupons:coupons,
                         activity:activity,
                         couponsNum:dkCoupons?dkCoupons.length:coupons.length,
-                        dkCoupons:dkCoupons||null
+                        dkCoupons:dkCoupons||null,
+                        seniorDiscount:resdata.seniorDiscount,
+                        seniorDiscountVal:(resdata.seniorDiscount/100).toFixed(2)
                   })
                   
                   console.log(dkCoupons)
@@ -205,6 +212,7 @@ Page({
                   })
                        
               } else {
+                  _this.setData({ loaderhide:true });
                   _this.showDialog(res.data.msg);
                  //  wx.showModal({
                  //      content:res.data.msg,
@@ -252,7 +260,6 @@ Page({
 
   onLoad: function (option) {
     var _this = this;
-    
     if(app.globalData.fromType == 1){
         var startTime,endTime,
             currentTime = new Date(),
@@ -289,10 +296,12 @@ Page({
       //用户信息
       _this.setData({
         userInfo:userInfo,
+        userId:app.globalData.userId
         // startTime:startTime,
         // endTime:endTime
       })
     })
+    
 
     //点餐页面传递的参数
     console.log(option);
@@ -348,7 +357,51 @@ Page({
        subscribe:subscribe,
        dinnerType:dinnerType
     }) 
-    _this.Init();
+
+    //是否是特权用户
+    var param = {
+      mini: 'mini',
+      userId: app.globalData.userId
+    }
+    wx.request({
+        url: app.globalData.host+'/senior/getSenior', 
+        data:param, 
+        success: function (res) {
+            //服务器返回的结果
+            if (res.data.errcode == 0) {
+               var resdata = res.data.data;
+               //特权用户
+               if(dwCoupons.length>3){           //已选尊享券
+                  _this.setData({ isSenior:resdata.isSenior, 
+                                  seniorName:resdata.seniorName,
+                                  seniorCode:resdata.seniorCode, 
+                                  useSenior:0, 
+                                  dwChoosed:true
+                                })
+               }else{
+                  var shopId = app.globalData.shopId;
+                  var shopIdArray = res.data.ids;
+                  if(shopIdArray.indexOf(shopId)>-1){
+                      _this.setData({ seniorBan:true })
+                  }
+                  _this.setData({
+                        isSenior:resdata.isSenior, 
+                        seniorName:resdata.seniorName,
+                        seniorCode:resdata.seniorCode, 
+                        useSenior:resdata.isSenior, 
+                        dwChoosed:false
+                  }) 
+               }  
+            } else {
+               //非特权用户 自动选券
+               _this.setData({isSenior:false,useSenior:0})
+            }
+            _this.Init();
+        },
+        fail: function () {
+            console.log('系统错误')
+        }
+    })
   },
 
   onShow: function(){
@@ -367,12 +420,21 @@ Page({
     wx.getStorage({
       key:'choosed_card',
       success: function(res) {
-         console.log(res.data);
          _this.setData({
             coupons:res.data?JSON.parse(res.data):[],
             type:0
          });
-         
+
+         if(res.data && res.data.length>2){
+            _this.setData({useSenior:0})
+         }else{
+            if(_this.data.seniorBan || _this.data.dwChoosed){
+                 _this.setData({useSenior:0})
+            }else{
+                 _this.setData({useSenior:1})
+            }
+           
+         }
          _this.Init();        
       } 
     })
@@ -607,7 +669,11 @@ Page({
         packTotalFee:this.data.packTotalFee,
         dwCoupons:this.data.dwCoupons,
         subscribe:this.data.subscribe,
-        subscribeTime:this.data.subscribeTime
+        subscribeTime:this.data.subscribeTime,
+        useSenior:this.data.useSenior,
+        seniorDiscount:this.data.seniorDiscount,
+        seniorName:this.data.seniorName,
+        seniorCode:this.data.seniorCode
     };
 
     if(this.data.subscribe==0){
@@ -717,7 +783,7 @@ Page({
                           showCancel: false,
                           success: function(res) {
                               if (res.confirm) {
-                                _this.data.coupons = []
+                                _this.setData({coupons:[]})
                                 wx.setStorage({
                                       key:"choosed_card",
                                       data:''
@@ -828,6 +894,23 @@ Page({
       this.setData({
          phoneInput2: e.detail.value
       })
+  },
+  chooseDiscount:function(e){
+      var type = e.currentTarget.dataset.type;
+      if(type==1){
+          if(this.data.seniorBan) return;
+          wx.setStorage({
+              key:"choosed_card",
+              data:''
+         })
+         this.setData({coupons:[]})
+         if(this.data.useSenior!=1){
+           this.setData({useSenior:1})
+           this.Init()
+         }
+      }else{
+         this.openCardList()
+      }
   }
 
 

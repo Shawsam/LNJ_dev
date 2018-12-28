@@ -55,6 +55,7 @@ Page({
               order.payTime = formatTime(order.payTime); 
               order.coupons = JSON.parse(order.coupons);
               order.activity = JSON.parse(order.activity);
+              order.seniorDiscountVal = (order.seniorDiscount/100).toFixed(2);
                
               var items=[],
                   orderData =  order.dcOrderGoodsList;

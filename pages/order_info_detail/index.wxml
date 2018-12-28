@@ -90,6 +90,15 @@
                  </view>
                </view>
           </view>
+
+          <view wx-if="{{order.useSenior}}">
+              <view class="list_item card"> 
+                 <view class="info1">
+                   <view class="name">{{order.seniorName}}</view>
+                   <view class="price">-￥{{order.seniorDiscountVal}}</view>
+                 </view>
+               </view>
+          </view>
       </view>
     </view>
 

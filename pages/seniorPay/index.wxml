@@ -1,0 +1,15 @@
+<!--index.wxml-->
+<view class="container">
+    <view class="card cont">
+    	<view class="title">已选特权卡</view>
+    	<view class="name">{{seniorName}}</view>
+    	<view class="desp">有效期90天，享88折优惠，买一赠一券</view>
+    	<view class="val">￥{{amountVal}}</view>
+    </view>
+    <view class="shop cont" wx:if="{{isRenew=='0'}}">
+    	<view class="title">已选门店</view>
+    	<view class="shop">{{shopName}}</view>
+    </view>
+    <view class="footer">总计：<span class="val">￥{{amountVal}}</span><view class="payBtn" bindtap="payFun">立即支付</view></view>
+</view>
+

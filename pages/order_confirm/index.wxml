@@ -151,16 +151,69 @@
 		  </view>
 	  </view>
 	</view>  -->
-
-	<view class="cont">
+<!-- 
+	<view class="cont" wx:if="{{!isVip}}">
 	    <view class="con2 couponCon" bindtap="openCardList">优惠券
-<!-- 	    <view wx:if="{{couponsNum}}" class="right colored">已选择{{couponsNum}}张<image class="arrodow rote" src="../../image/arrodow.png" /></view> -->
             <view  wx:if="{{!dkisUnshare}}">
 	            <view wx:if="{{couponsNum && couponFee>0 }}" class="right colored">-￥{{couponFee/100}}<image class="arrodow rote" src="../../image/arrodow.png" /></view>
 	            <view wx:if="{{!couponsNum || couponFee==0}}"  class="right {{card_num?'colored':''}}">{{card_num?card_num+'张可用':'暂无可用'}}<image class="arrodow rote" src="../../image/arrodow.png" /></view>
 	        </view>
 	        <view wx:if="{{dkisUnshare}}"  class="right">尊享优惠不可与其他优惠同享<image class="arrodow rote" src="../../image/arrodow.png" /></view>
 	    </view>
+	</view> -->
+
+	<view class="cont discount" wx:if="{{!isSenior}}">
+		 <view class="title">会员优惠<span class="tip">优惠不同享</span></view>
+		 <view class="item">超级特权卡<span class="tag">使用</span>
+		    <view class="pullRight"><span class="desp" wx:if="{{userId}}">无</span><span class="desp" wx:if="{{!userId}}">未登录</span></view>
+		 </view>
+		 <view bindtap="openCardList" data-type="0" class="item {{couponsNum && couponFee>0 ?'choosed':''}}">优惠券<span class="tag">使用</span>
+		 	<view class="pullRight" wx:if="{{userId}}">
+		 		<span wx:if="{{!dkisUnshare}}">
+			 		<span class="desp" wx:if="{{!couponsNum || couponFee==0}}"><span class="colored">{{card_num || ''}}</span>{{card_num?'张可用':'暂无可用'}}</span>
+			 		<span class="desp" wx:if="{{couponsNum && couponFee>0 }}"><span class="colored">-￥{{couponFee/100}}</span></span>
+			 		<image wx-if="{{card_num}}" class="icon ichoose" src="../../image/ichoose.png" />
+		 		    <image class="arrodow rote ichoosed" src="../../image/arrodow.png" />
+			 	</span>
+			 	<span class="desp" wx:if="{{dkisUnshare}}">优惠券不可与优惠菜品共享</span>
+		 	</view>
+		 	<view class="pullRight" wx:if="{{!userId}}"><span class="desp">未登录</span></view>
+		 </view>
+	</view>
+
+	<view class="cont discount" wx:if="{{isSenior}}">
+		 <view class="title">会员优惠<span class="tip">优惠不同享</span></view>
+		 <view bindtap="chooseDiscount" data-type="1" class="item {{!dwChoosed && useSenior==1 && !seniorBan ?'choosed':''}}">{{ seniorName }}<span class="tag">使用</span>
+		 	<view class="pullRight" wx:if="{{userId}}">
+		 		<span  wx:if="{{!dwChoosed}}">
+			 		<span wx:if="{{!seniorBan}}">
+			 		    <span class="desp">
+			 		    	<span class="colored" wx-if="{{useSenior==1}}">-￥{{seniorDiscountVal}}</span>
+			 		    	<span wx-if="{{useSenior==0}}">可用</span>
+			 		    </span>
+			 		    <image class="icon ichoose" src="../../image/ichoose.png" />
+			 	        <image class="icon ichoosed" src="../../image/ichoosed.png" />
+			 	    </span>
+		 		    <span wx:if="{{seniorBan}}">
+		 		    	<span  class="desp">不可用</span>
+		 		    </span>
+		 	    </span>
+		 	    <span class="desp" wx:if="{{dwChoosed}}">特权卡不可与优惠菜品共享</span>
+		    </view>
+		    <view class="pullRight" wx:if="{{!userId}}"><span class="desp">未登录</span></view>
+		 </view>
+		 <view bindtap="chooseDiscount" data-type="0" class="item {{ couponsNum && couponFee>0 ?'choosed':''}}">优惠券<span class="tag">使用</span>
+		 	<view class="pullRight" wx:if="{{userId}}">
+		 	    <span wx:if="{{!dkisUnshare}}">
+		 	    	<span class="desp" wx:if="{{!couponsNum || couponFee==0}}"><span class="colored">{{card_num || ''}}</span>{{card_num?'张可用':'暂无可用'}}</span>
+		 		    <span class="desp" wx:if="{{couponsNum && couponFee>0 }}"><span class="colored">-￥{{couponFee/100}}</span></span>
+		 		    <image wx-if="{{card_num}}" class="icon ichoose" src="../../image/ichoose.png" />
+		 		    <image class="arrodow rote ichoosed" src="../../image/arrodow.png" />
+		 	    </span>
+		 	    <span class="desp" wx:if="{{dkisUnshare}}">优惠券不可与优惠菜品共享</span>
+		 	</view>
+		 	<view class="pullRight" wx:if="{{!userId}}"><span class="desp">未登录</span></view>
+		 </view>
 	</view>
 
 </view>
@@ -249,8 +302,14 @@
                </view>
             </view>
 
-
-
+            <view wx:if="{{seniorDiscount}}">
+		       <view class="item card coupon"> 
+	               <view class="info1">
+	                 <view class="name">{{ seniorName }}</view>
+	                 <view class="price">-￥{{seniorDiscount/100}}</view>
+	               </view>
+               </view>
+            </view>
         </view>
         <view class="total">总计:<view class="flag">￥</view>{{userFeeVal}}</view>
     </view>

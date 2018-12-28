@@ -36,7 +36,9 @@
     "pages/webChargelog/index",
     "pages/webChargetip/index",
     "pages/webChargesuccess/index",
-    "pages/webChargefail/index"
+    "pages/webChargefail/index",
+    "pages/seniorPay/index",
+    "pages/webSeniorsuccess/index"
   ],
   "window":{
     "backgroundTextStyle":"light",
