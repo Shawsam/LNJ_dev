@@ -163,7 +163,7 @@
 	</view> -->
 
 	<view class="cont discount" wx:if="{{!isSenior}}">
-		 <view class="title">会员优惠<span class="tip">优惠不同享</span></view>
+		 <view class="title">会员优惠<span class="tip">(特权卡与优惠券不可同时使用)</span></view>
 		 <view class="item">超级特权卡<span class="tag">使用</span>
 		    <view class="pullRight"><span class="desp" wx:if="{{userId}}">无</span><span class="desp" wx:if="{{!userId}}">未登录</span></view>
 		 </view>
