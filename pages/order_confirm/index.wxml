@@ -182,7 +182,7 @@
 	</view>
 
 	<view class="cont discount" wx:if="{{isSenior}}">
-		 <view class="title">会员优惠<span class="tip">优惠不同享</span></view>
+		 <view class="title">会员优惠<span class="tip">(特权卡与优惠券不可同时使用)</span></view>
 		 <view bindtap="chooseDiscount" data-type="1" class="item {{!dwChoosed && useSenior==1 && !seniorBan ?'choosed':''}}">{{ seniorName }}<span class="tag">使用</span>
 		 	<view class="pullRight" wx:if="{{userId}}">
 		 		<span  wx:if="{{!dwChoosed}}">
