@@ -15,7 +15,9 @@ Page({
      loaderhide:true,
      jumpLock:false,
      noticeClosed:false,
-     canIUseWebView: wx.canIUse('web-view')
+     canIUseWebView: wx.canIUse('web-view'),
+     transformX:100,
+     transformY:100
   },
 
   onLoad:function(option){

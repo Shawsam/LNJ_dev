@@ -74,6 +74,7 @@
     </view>
 </view>
 
+<view class="guideCon"><official-account bindload="guideLoad" binderror="guideError"></official-account></view>
 <view class="section bottomCon">
 <!--   <view class="dot"></view> -->
 <!--   <view class="title">加入会员 即刻享有</view>
